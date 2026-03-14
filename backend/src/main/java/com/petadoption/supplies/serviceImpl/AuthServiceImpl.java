@@ -21,13 +21,13 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtils jwtUtils;
 
     @Override
-    public AuthResponse register(RegisterRequest request){
+    public AuthResponse register(RegisterRequest request) {
 
-        if(userRepository.existsByUsername(request.getUsername())){
+        if (userRepository.existsByUsername(request.getUsername())) {
             throw new UserException("Registration failed: Username already exists.");
         }
 
-        if(userRepository.existsByEmail(request.getEmail())){
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserException("Registration failed: Email already registered.");
         }
 
@@ -50,18 +50,19 @@ public class AuthServiceImpl implements AuthService {
                 user.getEmail(),
                 user.getLocation(),
                 user.getRole(),
-                "User registered successfully"
-        );
+                "User registered successfully");
     }
 
     @Override
-    public AuthResponse login(LoginRequest request){
+    public AuthResponse login(LoginRequest request) {
 
-        User user = userRepository.findByUsername(request.getUsernameOrEmail())
-                .orElseThrow(() ->
-                        new UserException("Login failed: User account not found."));
+        User user = userRepository
+                .findByUsername(request.getUsernameOrEmail())
+                .orElseGet(() -> userRepository
+                        .findByEmail(request.getUsernameOrEmail())
+                        .orElseThrow(() -> new UserException("Login failed: User account not found.")));
 
-        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new UserException("Login failed: Incorrect password.");
         }
 
@@ -73,7 +74,6 @@ public class AuthServiceImpl implements AuthService {
                 user.getEmail(),
                 user.getLocation(),
                 user.getRole(),
-                "Login successful"
-        );
+                "Login successful");
     }
 }
