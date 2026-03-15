@@ -32,7 +32,6 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = new User();
-
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -42,15 +41,13 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
-        String token = jwtUtils.generateToken(user.getUsername());
-
         return new AuthResponse(
-                token,
+                null,
                 user.getUsername(),
                 user.getEmail(),
                 user.getLocation(),
                 user.getRole(),
-                "User registered successfully");
+                "Registration successful! You can now log in.");
     }
 
     @Override
