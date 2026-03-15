@@ -31,13 +31,16 @@ export default function Register() {
 
   const fieldSx = { "& .MuiOutlinedInput-root": { borderRadius: 2 } };
 
-  // ── Register form ───────────────────────────────────────────
   return (
-    <Container maxWidth="sm">
-      <Box mt={6} mb={4}>
-        <Paper variant="outlined" sx={{ p: 4, borderRadius: 3 }}>
+    <Box sx={{
+      minHeight: "100vh",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      background: "linear-gradient(135deg, #f0faf6 0%, #e6f7f0 100%)",
+      px: 2, py: 4,
+    }}>
+      <Container maxWidth="sm" disableGutters>
+        <Paper variant="outlined" sx={{ p: { xs: 3, sm: 4 }, borderRadius: 3 }}>
 
-          {/* Header */}
           <Box textAlign="center" mb={3}>
             <Box sx={{
               width: 52, height: 52, bgcolor: "#E1F5EE", borderRadius: 3,
@@ -55,7 +58,6 @@ export default function Register() {
             </Typography>
           </Box>
 
-          {/* Error alert */}
           {error && (
             <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
               {error}
@@ -64,7 +66,6 @@ export default function Register() {
 
           <form onSubmit={handleSubmit}>
 
-            {/* Account section */}
             <Divider sx={{ mb: 2 }}>
               <Typography variant="caption" color="text.secondary" fontWeight={500}
                 sx={{ textTransform: "uppercase", letterSpacing: 1 }}>
@@ -72,7 +73,7 @@ export default function Register() {
               </Typography>
             </Divider>
 
-            <Box sx={{ display: "flex", gap: 1.5, mb: 1.5 }}>
+            <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 1.5, mb: 1.5 }}>
               <TextField fullWidth size="small" label="Username" name="username"
                 value={form.username} onChange={handleChange} sx={fieldSx} />
               <TextField fullWidth size="small" label="Email" name="email"
@@ -85,7 +86,6 @@ export default function Register() {
               helperText="Min 8 chars, must include uppercase, lowercase, number & special character (@$!%*?&)"
             />
 
-            {/* Details section */}
             <Divider sx={{ mt: 2.5, mb: 2 }}>
               <Typography variant="caption" color="text.secondary" fontWeight={500}
                 sx={{ textTransform: "uppercase", letterSpacing: 1 }}>
@@ -93,7 +93,7 @@ export default function Register() {
               </Typography>
             </Divider>
 
-            <Box sx={{ display: "flex", gap: 1.5 }}>
+            <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 1.5 }}>
               <TextField fullWidth size="small" label="Contact" name="contact"
                 value={form.contact} onChange={handleChange} sx={fieldSx} />
               <TextField fullWidth size="small" label="Location" name="location"
@@ -117,7 +117,7 @@ export default function Register() {
           </Typography>
 
         </Paper>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Button, Stack, Paper, Chip } from "@mui/material";
+import { Box, Typography, Button, Stack, Paper, Chip, useMediaQuery, useTheme } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -54,6 +54,8 @@ export default function Profile() {
   const [loading, setLoading]     = useState(true);
   const [form, setForm]           = useState({ location: "", contact: "" });
   const [isEditing, setIsEditing] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -106,7 +108,7 @@ export default function Profile() {
       backgroundSize: "200px 200px",
       backgroundColor: "#ffffff",
     }}>
-      <Box sx={{ maxWidth: 520, mx: "auto", pt: 6, px: 2, pb: 6 }}>
+      <Box sx={{ maxWidth: 520, mx: "auto", pt: { xs: 3, sm: 6 }, px: 2, pb: 6 }}>
         <Paper variant="outlined" sx={{
           borderRadius: 3, overflow: "hidden",
           backgroundColor: "rgba(255,255,255,0.95)",
@@ -115,30 +117,31 @@ export default function Profile() {
 
           {/* Banner */}
           <Box sx={{
-            height: 100,
+            height: { xs: 80, sm: 100 },
             background: "linear-gradient(135deg, #0F6E56, #1D9E75, #5DCAA5)",
             position: "relative",
           }}>
-            {/* Avatar */}
             <Box sx={{
-              position: "absolute", bottom: -32, left: 28,
-              width: 64, height: 64, borderRadius: "50%",
+              position: "absolute", bottom: { xs: -24, sm: -32 }, left: { xs: 16, sm: 28 },
+              width: { xs: 52, sm: 64 }, height: { xs: 52, sm: 64 }, borderRadius: "50%",
               bgcolor: "#085041", border: "3px solid white",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
-              <Typography sx={{ color: "#9FE1CB", fontWeight: 600, fontSize: "1.3rem" }}>
+              <Typography sx={{
+                color: "#9FE1CB", fontWeight: 600,
+                fontSize: { xs: "1rem", sm: "1.3rem" },
+              }}>
                 {initials}
               </Typography>
             </Box>
 
-            {/* Edit button top right of banner */}
             {!isEditing && (
               <Button
                 size="small"
                 startIcon={<EditIcon sx={{ fontSize: "13px !important" }} />}
                 onClick={() => setIsEditing(true)}
                 sx={{
-                  position: "absolute", bottom: -18, right: 20,
+                  position: "absolute", bottom: { xs: -14, sm: -18 }, right: { xs: 12, sm: 20 },
                   bgcolor: "white", color: "success.main",
                   border: "0.5px solid", borderColor: "divider",
                   textTransform: "none", fontSize: "12px", borderRadius: 2,
@@ -151,21 +154,21 @@ export default function Profile() {
           </Box>
 
           {/* Content */}
-          <Box sx={{ px: 3.5, pt: 5.5, pb: 3 }}>
+          <Box sx={{ px: { xs: 2, sm: 3.5 }, pt: { xs: 4.5, sm: 5.5 }, pb: 3 }}>
 
-            {/* Name + badges */}
             <Typography variant="h6" fontWeight={700}
               fontFamily="'Playfair Display', serif" mb={0.5}>
               {user.username}
             </Typography>
 
-            <Stack direction="row" spacing={1} alignItems="center" mb={2}>
+            <Stack direction="row" spacing={1} alignItems="center" mb={2}
+              sx={{ flexWrap: "wrap", gap: 0.5 }}>
               <Chip
                 icon={<EmailIcon sx={{ fontSize: "13px !important" }} />}
                 label={user.email}
                 size="small" variant="outlined"
-                sx={{ fontSize: 12, height: 24, borderColor: "#9FE1CB",
-                  bgcolor: "#f0faf6", color: "#0F6E56" }}
+                sx={{ fontSize: { xs: 11, sm: 12 }, height: 24,
+                  borderColor: "#9FE1CB", bgcolor: "#f0faf6", color: "#0F6E56" }}
               />
               <Chip
                 label={user.role || "USER"}
@@ -186,15 +189,21 @@ export default function Profile() {
               ].map((s) => (
                 <Box key={s.label} sx={{ flex: 1, textAlign: "center" }}>
                   <Box sx={{ display: "flex", justifyContent: "center", mb: 0.3 }}>{s.icon}</Box>
-                  <Typography variant="body2" fontWeight={600} color="success.main">{s.val}</Typography>
-                  <Typography variant="caption" color="text.secondary">{s.label}</Typography>
+                  <Typography variant="body2" fontWeight={600} color="success.main"
+                    sx={{ fontSize: { xs: 11, sm: 14 } }}>
+                    {s.val}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary"
+                    sx={{ fontSize: { xs: 10, sm: 12 } }}>
+                    {s.label}
+                  </Typography>
                 </Box>
               ))}
             </Stack>
 
             {/* View mode */}
             {!isEditing && (
-              <Stack direction="row" spacing={1.5} mb={2.5}>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} mb={2.5}>
                 <Box sx={{ flex: 1 }}>
                   <InfoBox icon={<LocationOnIcon sx={{ fontSize: 13 }} />}
                     label="Location" value={user.location} />
@@ -209,7 +218,7 @@ export default function Profile() {
             {/* Edit mode */}
             {isEditing && (
               <>
-                <Stack direction="row" spacing={1.5} mb={2}>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} mb={2}>
                   <Box sx={{ flex: 1 }}>
                     <EditField label="Location" icon={<LocationOnIcon sx={{ fontSize: 13 }} />}
                       name="location" value={form.location} onChange={handleChange} />
@@ -219,26 +228,34 @@ export default function Profile() {
                       name="contact" value={form.contact} onChange={handleChange} />
                   </Box>
                 </Stack>
-                <Stack direction="row" spacing={1.5} alignItems="center">
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "center" }}>
                   <Button variant="contained" color="success" size="small"
+                    fullWidth={isMobile}
                     onClick={handleUpdate}
                     sx={{ textTransform: "none", borderRadius: 2 }}>
                     Update profile
                   </Button>
                   <Button variant="outlined" size="small" color="inherit"
+                    fullWidth={isMobile}
                     onClick={handleCancel}
                     sx={{ textTransform: "none", borderRadius: 2,
                       borderColor: "divider", color: "text.secondary" }}>
                     Cancel
                   </Button>
-                  <Typography variant="caption" color="text.secondary">
+                  {!isMobile && (
+                    <Typography variant="caption" color="text.secondary">
+                      Only location and contact can be edited.
+                    </Typography>
+                  )}
+                </Stack>
+                {isMobile && (
+                  <Typography variant="caption" color="text.secondary" display="block" mt={1}>
                     Only location and contact can be edited.
                   </Typography>
-                </Stack>
+                )}
               </>
             )}
 
-            {/* Member since */}
             {!isEditing && (
               <Typography variant="caption" color="text.secondary" display="block" mt={1.5}>
                 Member since {new Date(user.createdAt || Date.now()).toLocaleDateString("en-US", { month: "long", year: "numeric" })}

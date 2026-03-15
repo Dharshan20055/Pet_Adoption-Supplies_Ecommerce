@@ -11,6 +11,7 @@ import com.petadoption.supplies.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +22,10 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtils jwtUtils;
 
     @Override
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
 
+        // ── Validate everything BEFORE touching the DB ──
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new UserException("Registration failed: Username already exists.");
         }
@@ -31,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
             throw new UserException("Registration failed: Email already registered.");
         }
 
+        // ── All checks passed — safe to save ──
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());

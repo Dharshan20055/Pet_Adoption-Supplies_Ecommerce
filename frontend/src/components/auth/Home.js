@@ -29,10 +29,10 @@ function Footer({ navigate }) {
       borderColor: "divider",
       background: "linear-gradient(180deg, #f0faf6 0%, #e6f7f0 100%)",
     }}>
-      <Box sx={{ maxWidth: 1100, mx: "auto", px: 6, py: 6 }}>
+      <Box sx={{ maxWidth: 1100, mx: "auto", px: { xs: 3, sm: 6 }, py: { xs: 4, sm: 6 } }}>
 
         {/* Top row */}
-        <Grid container spacing={6} sx={{ mb: 5 }}>
+        <Grid container spacing={{ xs: 3, sm: 6 }} sx={{ mb: { xs: 3, sm: 5 } }}>
 
           {/* Brand */}
           <Grid item xs={12} sm={4}>
@@ -48,7 +48,8 @@ function Footer({ navigate }) {
                 PetAdopt
               </Typography>
             </Stack>
-            <Typography variant="body2" color="text.secondary" lineHeight={1.8} maxWidth={280}>
+            <Typography variant="body2" color="text.secondary" lineHeight={1.8}
+              sx={{ maxWidth: { xs: "100%", sm: 280 } }}>
               Connecting pets with loving families. Every animal deserves a forever home.
             </Typography>
             <Stack direction="row" spacing={1} mt={2}>
@@ -116,7 +117,7 @@ function Footer({ navigate }) {
                 style={{
                   flex: 1, padding: "8px 12px", border: "1px solid #9FE1CB",
                   borderRadius: "8px", fontSize: "13px", outline: "none",
-                  fontFamily: "inherit", background: "white",
+                  fontFamily: "inherit", background: "white", minWidth: 0,
                 }}
               />
               <Button variant="contained" color="success" size="small"
@@ -132,7 +133,8 @@ function Footer({ navigate }) {
 
         {/* Bottom row */}
         <Stack direction={{ xs: "column", sm: "row" }}
-          justifyContent="space-between" alignItems="center" spacing={1}>
+          justifyContent="space-between" alignItems="center"
+          spacing={{ xs: 1.5, sm: 1 }}>
           <Typography variant="caption" color="text.secondary"
             sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             Made with <FavoriteIcon sx={{ fontSize: 12, color: "error.main" }} /> for pets · © {new Date().getFullYear()} PetAdopt
@@ -173,13 +175,23 @@ export default function Home() {
       backgroundSize: "120px 120px",
       backgroundColor: "#ffffff",
     }}>
-      <Box sx={{ maxWidth: 700, mx: "auto", px: 3, pt: 7, pb: 6, textAlign: "center" }}>
+      <Box sx={{
+        maxWidth: 700, mx: "auto",
+        px: { xs: 2, sm: 3 },
+        pt: { xs: 4, sm: 7 },
+        pb: 6,
+        textAlign: "center",
+      }}>
 
         {/* Hero */}
         <Chip label="Welcome back" color="success" size="small" sx={{ mb: 2.5 }} />
 
-        <Typography variant="h3" fontWeight={700} gutterBottom
-          sx={{ fontFamily: "'Playfair Display', serif" }}>
+        <Typography
+          fontWeight={700} gutterBottom
+          sx={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: { xs: "1.8rem", sm: "2.5rem", md: "3rem" },
+          }}>
           Find your perfect{" "}
           <Box component="span" sx={{ color: "success.main" }}>
             furry companion
@@ -187,20 +199,27 @@ export default function Home() {
         </Typography>
 
         <Typography variant="body1" color="text.secondary"
-          sx={{ mb: 4, maxWidth: 480, mx: "auto", lineHeight: 1.8 }}>
+          sx={{ mb: 4, maxWidth: 480, mx: "auto", lineHeight: 1.8,
+            fontSize: { xs: "0.9rem", sm: "1rem" } }}>
           Browse pets looking for a forever home, manage your supplies,
           and connect with fellow adopters in your area.
         </Typography>
 
-        <Stack direction="row" spacing={2} justifyContent="center" sx={{ mb: 6 }}>
-          <Button variant="contained" color="success" size="large"
+        <Stack direction={{ xs: "column", sm: "row" }}
+          spacing={2} justifyContent="center" sx={{ mb: 6 }}>
+          <Button variant="contained" color="success"
+            size="large"
             onClick={() => navigate("/pets")}
-            sx={{ textTransform: "none", borderRadius: 2, px: 3 }}>
+            fullWidth={false}
+            sx={{ textTransform: "none", borderRadius: 2, px: 3,
+              width: { xs: "100%", sm: "auto" } }}>
             Browse pets
           </Button>
-          <Button variant="outlined" size="large"
+          <Button variant="outlined"
+            size="large"
             onClick={() => navigate("/profile")}
-            sx={{ textTransform: "none", borderRadius: 2, px: 3 }}>
+            sx={{ textTransform: "none", borderRadius: 2, px: 3,
+              width: { xs: "100%", sm: "auto" } }}>
             My profile
           </Button>
         </Stack>
@@ -231,19 +250,25 @@ export default function Home() {
           {quickLinks.map((link) => (
             <Grid item xs={6} sm={3} key={link.title}>
               <Paper variant="outlined" onClick={() => navigate(link.path)} sx={{
-                p: 2, borderRadius: 3, cursor: "pointer", textAlign: "center",
+                p: { xs: 1.5, sm: 2 }, borderRadius: 3, cursor: "pointer", textAlign: "center",
                 backgroundColor: "rgba(255,255,255,0.85)",
                 "&:hover": { boxShadow: 3, transform: "translateY(-2px)", transition: "all 0.2s" },
               }}>
                 <Box sx={{
-                  width: 40, height: 40, borderRadius: 2,
+                  width: { xs: 36, sm: 40 }, height: { xs: 36, sm: 40 }, borderRadius: 2,
                   background: link.color, display: "flex",
                   alignItems: "center", justifyContent: "center", mx: "auto", mb: 1,
                 }}>
                   {link.icon}
                 </Box>
-                <Typography variant="body2" fontWeight={500}>{link.title}</Typography>
-                <Typography variant="caption" color="text.secondary">{link.desc}</Typography>
+                <Typography variant="body2" fontWeight={500}
+                  sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}>
+                  {link.title}
+                </Typography>
+                <Typography variant="caption" color="text.secondary"
+                  sx={{ fontSize: { xs: "0.7rem", sm: "0.75rem" } }}>
+                  {link.desc}
+                </Typography>
               </Paper>
             </Grid>
           ))}
@@ -251,7 +276,7 @@ export default function Home() {
 
         {/* Tip */}
         <Paper sx={{
-          p: 2.5, borderRadius: 3, textAlign: "left",
+          p: { xs: 2, sm: 2.5 }, borderRadius: 3, textAlign: "left",
           bgcolor: "rgba(230, 248, 241, 0.9)",
           border: "1px solid", borderColor: "#9FE1CB",
         }}>
@@ -259,7 +284,8 @@ export default function Home() {
             display="block" sx={{ mb: 0.5 }}>
             🐾 Tip of the day
           </Typography>
-          <Typography variant="body2" color="success.dark">
+          <Typography variant="body2" color="success.dark"
+            sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}>
             Newly adopted pets need 2–3 weeks to decompress. Give them a quiet
             space and let them explore at their own pace.
           </Typography>
