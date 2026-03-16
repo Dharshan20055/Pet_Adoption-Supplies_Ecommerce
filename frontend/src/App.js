@@ -1,28 +1,54 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import Navbar from "./components/common/Navbar";
+import Loading from "./components/common/Loading";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import PetCatalog from './components/pet/PetCatalog'; 
 import AddPetForm from './components/pet/AddPetForm';
 
+const Login = lazy(() => import("./components/auth/Login"));
+const Register = lazy(() => import("./components/auth/Register"));
+const Home = lazy(() => import("./components/auth/Home"));
+const Profile = lazy(() => import("./components/auth/Profile"));
+// const PetCatalog = lazy(() => import("./components/pet/PetCatalog"));
+// const AddPetForm = lazy(() => import("./components/pet/AddPetForm"));
+// const BuyerDashboard = lazy(() => import("./components/buyer/BuyerDashboard"));
+// const SellerDashboard = lazy(() => import("./components/seller/SellerDashboard"));
+// const ChatBox = lazy(() => import("./components/chat/ChatBox"));
+
 function App() {
   return (
-    <Router>
-      <div className="App">
-        {/* Nav bar for easy switching while testing */}
-        <nav style={{ padding: '20px', background: '#4f46e5', color: 'white', display: 'flex', gap: '20px' }}>
-          <a href="/petcatalog" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>Browse Pets</a>
-          <a href="/add-pet" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>List a Pet</a>
-        </nav>
+    <BrowserRouter>
 
+      <Navbar />
+
+      <Suspense fallback={<Loading />}>
         <Routes>
-          
-          <Route path="/" element={<Navigate to="/petcatalog" />} />
+
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Navigate to="/petcatalog" />} />
           
           <Route path="/petcatalog" element={<PetCatalog />} />
           
           <Route path="/add-pet" element={<AddPetForm />} />
+          {/* <Route path="/catalog" element={<PetCatalog />} />
+          <Route path="/add-pet" element={<AddPetForm />} /> */}
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
-      </div>
-    </Router>
+      </Suspense>
+
+    </BrowserRouter>
   );
 }
 
