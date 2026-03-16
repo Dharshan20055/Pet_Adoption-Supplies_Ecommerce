@@ -3,6 +3,8 @@ import { Suspense, lazy } from "react";
 import Navbar from "./components/common/Navbar";
 import Loading from "./components/common/Loading";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import PetCatalog from './components/pet/PetCatalog'; 
+import AddPetForm from './components/pet/AddPetForm';
 
 const Login = lazy(() => import("./components/auth/Login"));
 const Register = lazy(() => import("./components/auth/Register"));
@@ -26,6 +28,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Navigate to="/petcatalog" />} />
+          
+          <Route path="/petcatalog" element={<PetCatalog />} />
+          
+          <Route path="/add-pet" element={<AddPetForm />} />
           {/* <Route path="/catalog" element={<PetCatalog />} />
           <Route path="/add-pet" element={<AddPetForm />} /> */}
 
