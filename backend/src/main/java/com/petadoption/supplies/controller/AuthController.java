@@ -55,6 +55,8 @@ public class AuthController {
         profile.setEmail(user.getEmail());
         profile.setLocation(user.getLocation());
         profile.setContact(user.getContact());
+        profile.setSubscribed(user.isSubscribed());
+        profile.setSubscriptionExpiresAt(user.getSubscriptionExpiresAt());
 
         return ResponseEntity.ok(profile);
     }
@@ -82,6 +84,8 @@ public class AuthController {
         profile.setEmail(user.getEmail());
         profile.setLocation(user.getLocation());
         profile.setContact(user.getContact());
+        profile.setSubscribed(user.isSubscribed());
+        profile.setSubscriptionExpiresAt(user.getSubscriptionExpiresAt());
 
         return ResponseEntity.ok(profile);
     }

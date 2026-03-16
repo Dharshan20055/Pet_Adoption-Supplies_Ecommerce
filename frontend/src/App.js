@@ -13,6 +13,10 @@ const Profile = lazy(() => import("./components/auth/Profile"));
 // const BuyerDashboard = lazy(() => import("./components/buyer/BuyerDashboard"));
 // const SellerDashboard = lazy(() => import("./components/seller/SellerDashboard"));
 // const ChatBox = lazy(() => import("./components/chat/ChatBox"));
+const Subscribe        = lazy(() => import("./components/auth/Subscribe"));
+const SubscribeSuccess = lazy(() => import("./components/auth/SubscribeSuccess"));
+const SubscribeCancel  = lazy(() => import("./components/auth/SubscribeCancel"));
+
 
 function App() {
   return (
@@ -37,6 +41,32 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/subscribe"
+            element={
+              <ProtectedRoute>
+                <Subscribe />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/subscribe/success"
+            element={
+              <ProtectedRoute>
+                <SubscribeSuccess />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/subscribe/cancel"
+            element={
+              <ProtectedRoute>
+                <SubscribeCancel />
+              </ProtectedRoute>
+            }
+          />
+
 
         </Routes>
       </Suspense>

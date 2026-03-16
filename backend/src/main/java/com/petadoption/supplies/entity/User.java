@@ -45,6 +45,18 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private boolean subscribed = false;
+
+    private LocalDateTime subscribedAt;
+    private LocalDateTime subscriptionExpiresAt;
+
+    @Column(unique = true)
+    private String stripeCustomerId;
+
+    @Column(unique = true)
+    private String stripeSubscriptionId;
+
     @PrePersist
     public void onCreate() {
         createdAt = LocalDateTime.now();

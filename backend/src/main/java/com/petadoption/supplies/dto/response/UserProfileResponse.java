@@ -8,4 +8,6 @@ public class UserProfileResponse {
     private String email;
     private String location;
     private String contact;
+    private boolean subscribed;
+    private java.time.LocalDateTime subscriptionExpiresAt;
 }

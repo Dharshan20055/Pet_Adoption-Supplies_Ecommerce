@@ -8,12 +8,25 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PetsIcon from "@mui/icons-material/Pets";
 import { logout } from "../../utils/authUtils";
 import { useNavigate, useLocation } from "react-router-dom";
+import API from "../../services/api";
+import { useEffect, useState as useReactState } from "react";
+
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const token = sessionStorage.getItem("token");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [subscribed, setSubscribed] = useReactState(false);
+
+  useEffect(() => {
+    if (token) {
+      API.get("/subscription/status")
+        .then(res => setSubscribed(res.data.subscribed))
+        .catch(err => console.error("Could not fetch sub status", err));
+    }
+  }, [token, setSubscribed]);
+
 
   const handleLogout = () => {
     logout();
@@ -97,6 +110,26 @@ export default function Navbar() {
 
             {token && (
               <>
+                {!subscribed && (
+                  <Button
+                    onClick={() => navigate("/subscribe")}
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      bgcolor: "white",
+                      color: "#0F6E56",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      borderRadius: 4,
+                      px: 2,
+                      ml: 1,
+                      mr: 1,
+                      "&:hover": { bgcolor: "rgba(255,255,255,0.9)" },
+                    }}
+                  >
+                    Go Premium ₹51
+                  </Button>
+                )}
                 <Button onClick={() => navigate("/profile")} sx={{
                   textTransform: "none",
                   color: location.pathname === "/profile" ? "white" : "rgba(255,255,255,0.75)",

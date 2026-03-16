@@ -6,6 +6,12 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import API from "../../services/api";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import StarIcon from "@mui/icons-material/Star";
+
 
 const stats = [
   { label: "Pets available",  value: "142", sub: "+12 this week"  },
@@ -166,6 +172,31 @@ function Footer({ navigate }) {
 
 export default function Home() {
   const navigate = useNavigate();
+  const [subscribed, setSubscribed] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(
+    sessionStorage.getItem("subBannerDismissed") === "true"
+  );
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        try {
+          const res = await API.get("/subscription/status");
+          setSubscribed(res.data.subscribed);
+        } catch (err) {
+          console.error("Error fetching sub status", err);
+        }
+      }
+    };
+    fetchStatus();
+  }, []);
+
+  const dismissBanner = () => {
+    setBannerDismissed(true);
+    sessionStorage.setItem("subBannerDismissed", "true");
+  };
+
 
   return (
     <Box sx={{
@@ -175,6 +206,50 @@ export default function Home() {
       backgroundSize: "120px 120px",
       backgroundColor: "#ffffff",
     }}>
+
+      {/* Subscription Banner */}
+      {!subscribed && !bannerDismissed && (
+        <Box
+          sx={{
+            bgcolor: "#FFF8E1",
+            borderBottom: "1px solid #FFB300",
+            py: 1,
+            px: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+          }}
+        >
+          <Typography variant="body2" sx={{ color: "#664D03", fontWeight: 500, mr: 2 }}>
+            🔓 Unlock full access — Subscribe for just ₹51/month
+          </Typography>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => navigate("/subscribe")}
+            sx={{
+              bgcolor: "#FFB300",
+              color: "#664D03",
+              fontWeight: 700,
+              fontSize: "0.7rem",
+              "&:hover": { bgcolor: "#FFA000" },
+              borderRadius: 2,
+              px: 1.5,
+            }}
+          >
+            Subscribe Now
+          </Button>
+          <IconButton
+            size="small"
+            onClick={dismissBanner}
+            sx={{ position: "absolute", right: 8, color: "#664D03" }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </Box>
+      )}
+
       <Box sx={{
         maxWidth: 700, mx: "auto",
         px: { xs: 2, sm: 3 },
@@ -184,7 +259,19 @@ export default function Home() {
       }}>
 
         {/* Hero */}
-        <Chip label="Welcome back" color="success" size="small" sx={{ mb: 2.5 }} />
+        <Stack direction="row" spacing={1} justifyContent="center" alignItems="center" sx={{ mb: 2.5 }}>
+          <Chip label="Welcome back" color="success" size="small" />
+          {subscribed && (
+            <Chip
+              icon={<StarIcon sx={{ fontSize: "14px !important" }} />}
+              label="Premium"
+              color="success"
+              size="small"
+              sx={{ fontWeight: 700, bgcolor: "#0F6E56" }}
+            />
+          )}
+        </Stack>
+
 
         <Typography
           fontWeight={700} gutterBottom

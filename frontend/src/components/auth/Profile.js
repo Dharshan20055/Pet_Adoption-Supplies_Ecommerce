@@ -6,6 +6,10 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import PetsIcon from "@mui/icons-material/Pets";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
+import StarIcon from "@mui/icons-material/Star";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import { useNavigate } from "react-router-dom";
+
 import API from "../../services/api";
 import Loading from "../common/Loading";
 
@@ -54,8 +58,10 @@ export default function Profile() {
   const [loading, setLoading]     = useState(true);
   const [form, setForm]           = useState({ location: "", contact: "" });
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -201,7 +207,55 @@ export default function Profile() {
               ))}
             </Stack>
 
+            {/* Subscription Section */}
+            <Paper
+              variant="outlined"
+              sx={{
+                p: 2,
+                mb: 2.5,
+                borderRadius: 3,
+                bgcolor: user.subscribed ? "rgba(29, 158, 117, 0.05)" : "rgba(0, 0, 0, 0.02)",
+                borderColor: user.subscribed ? "#1D9E75" : "divider",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 2,
+                    bgcolor: user.subscribed ? "#1D9E75" : "#e0e0e0",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "white",
+                  }}
+                >
+                  {user.subscribed ? <StarIcon /> : <VerifiedUserIcon />}
+                </Box>
+                <Box>
+                  <Typography variant="body2" fontWeight={700} color={user.subscribed ? "#0F6E56" : "text.primary"}>
+                    {user.subscribed ? "Premium Member" : "Free Plan"}
+                  </Typography>
+                  {user.subscribed && user.subscriptionExpiresAt && (
+                    <Typography variant="caption" color="text.secondary">
+                      Valid until: {new Date(user.subscriptionExpiresAt).toLocaleDateString()}
+                    </Typography>
+                  )}
+                  {!user.subscribed && (
+                    <Typography variant="caption" color="text.secondary">
+                      Upgrade for just ₹51/month
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            </Paper>
+
             {/* View mode */}
+
             {!isEditing && (
               <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} mb={2.5}>
                 <Box sx={{ flex: 1 }}>
