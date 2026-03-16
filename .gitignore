@@ -1,0 +1,40 @@
+# ============================================================
+# Pet Marketplace - .gitignore
+# ============================================================
+
+# --- CREDENTIALS (NEVER commit these) ---
+backend/src/main/resources/application.properties
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# --- Maven ---
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+!backend/.mvn/wrapper/maven-wrapper.properties
+
+# --- Node / React ---
+frontend/node_modules/
+frontend/build/
+frontend/.pnp
+frontend/.pnp.js
+frontend/coverage/
+
+# --- IDE ---
+.idea/
+*.iml
+.vscode/settings.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs ---
+*.log
+logs/
