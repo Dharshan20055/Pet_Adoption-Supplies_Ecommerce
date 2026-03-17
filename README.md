@@ -14,7 +14,7 @@ A full-stack pet adoption & sales ecommerce platform.
 ## Module Assignments
 | Developer    | Module                          |
 |--------------|---------------------------------|
-| Ashwin       | Auth & User Management          |
+| Aswin        | Auth & User Management          |
 | SriVarshini  | Pet Catalog & Filters           |
 | ThanushKumar | Buyer Workflow (Cart & Requests)|
 | Maheshwari   | Seller Workflow & Live Chat     |
